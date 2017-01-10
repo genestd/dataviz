@@ -27,7 +27,6 @@ export default class ChartContainer extends React.Component{
 
   componentDidMount(){
     window.addEventListener("resize", _.debounce(this.updateDimensions,100));
-
     let gdp = []
     let parseTime = d3.timeParse("%Y-%m-%d")
     let formatTime = d3.timeFormat("%d-%b-%Y")
@@ -38,6 +37,9 @@ export default class ChartContainer extends React.Component{
            res.data["observations"].map( (result,index)=>{
              let date = parseTime( result.date)
              let value = +result.value
+             if (isNaN(value)){
+               value=0
+             }
              gdp[index] = { date: date
                            ,gdp: value}
              })
