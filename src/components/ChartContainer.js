@@ -3,6 +3,7 @@ import * as _ from 'underscore'
 import axios from 'axios'
 import * as d3 from 'd3'
 import GDPViz from '../components/GDPViz'
+import Loading from '../components/Loading'
 
 export default class ChartContainer extends React.Component{
 
@@ -31,9 +32,9 @@ export default class ChartContainer extends React.Component{
     let parseTime = d3.timeParse("%Y-%m-%d")
     let formatTime = d3.timeFormat("%d-%b-%Y")
 
-    axios.get( "https://api.stlouisfed.org/fred/series/observations?series_id=GDP&api_key=ed1b37238eb016257dabc4a5cd535e15&file_type=json")
+    axios.get( 'https://enigmatic-shelf-36767.herokuapp.com/api?https://api.stlouisfed.org/fred/series/observations?series_id=GDP&api_key=ed1b37238eb016257dabc4a5cd535e15&file_type=json')
+      //"https://api.stlouisfed.org/fred/series/observations?series_id=GDP&api_key=ed1b37238eb016257dabc4a5cd535e15&file_type=json")
          .then( res => {
-
            res.data["observations"].map( (result,index)=>{
              let date = parseTime( result.date)
              let value = +result.value
@@ -80,7 +81,7 @@ export default class ChartContainer extends React.Component{
                          id={this.state.svgId}/>
                      </div>     )
     } else {
-      return ( <div><h1>Loading...</h1></div> )
+      return ( <Loading /> )
     }
   }
 
