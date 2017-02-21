@@ -13,7 +13,7 @@ var devFlagPlugin = new webpack.DefinePlugin({
 });
 
 module.exports={
-  devtool: "source-map",
+//  devtool: "source-map",
   entry: [
     './src/index.js'
   ],
@@ -23,14 +23,15 @@ module.exports={
     filename: "index_bundle.js"
   },
   devServer: {
-    contentBase: __dirname + '/dist'
+    contentBase: __dirname + '/dist',
+    publicPath: 'http://localhost:8080'
   },
   module: {
     loaders: [
       { test: /\.(jpe?g|png|gif|svg|tsv|csv)$/i, loader: 'file-loader' },
       { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader"},
-      { test: /\.css/, loader: ExtractTextPlugin.extract("css")},
-      { test: /\.scss$/, loaders: [ 'style', 'css?sourceMap', 'sass?outputStyle=compressed' ]}
+      { test: /\.css/, loader: ExtractTextPlugin.extract(["css"])},
+      { test: /\.scss$/, loaders: [ 'style', 'css', 'resolve-url-loader', 'sass?outputStyle=compressed' ]}
     ]
   },
   sassLoader: {
@@ -46,7 +47,7 @@ module.exports={
     HTMLWebpackPluginConfig,
     new CopyWebpackPlugin([
             { from: './src/icons', to: 'icons' },
-            { from: './src/styles/entypo', to: 'styles/entypo'},
+            { from: './src/icons/flags.png', to: 'flags.png'},
             { from: './src/data.csv' },
             { from: './src/tempData.json'},
             { from: './src/countryData.json'}
