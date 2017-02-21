@@ -47,7 +47,9 @@ module.exports={
     new CopyWebpackPlugin([
             { from: './src/icons', to: 'icons' },
             { from: './src/styles/entypo', to: 'styles/entypo'},
-            { from: './src/data.csv' }
+            { from: './src/data.csv' },
+            { from: './src/tempData.json'},
+            { from: './src/countryData.json'}
         ]),
     new ExtractTextPlugin("styles.css"),
     devFlagPlugin

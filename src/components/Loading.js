@@ -21,6 +21,9 @@ class Loading extends React.Component {
       })
     }, 250)
   }
+  componentDidEnter(){
+    console.log('Loading component entered')
+  }
 
   componentWillUnmount(){
     clearInterval( this.state.timer )

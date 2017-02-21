@@ -1,46 +1,69 @@
 import React from 'react'
 import * as d3 from 'd3'
+import axios from 'axios'
+import Loading from '../components/Loading'
+let parseTime = d3.timeParse("%Y-%m-%d")
+let formatTime = d3.timeFormat("%d-%b-%Y")
 
-  let parseTime = d3.timeParse("%Y-%m-%d")
-  let formatTime = d3.timeFormat("%d-%b-%Y")
+
 
 class GDPViz extends React.Component {
-
   constructor(props){
     super(props);
-
+    let c = d3.select(this.props.location)
+    c.selectAll('svg').remove()
     this.setContext = this.setContext.bind(this)
-  }
 
+    this.state = {
+      data: [],
+      loaded: false,
+      id: 'gdpChart'
+    }
+
+    let gdp = []
+
+    axios.get( 'https://enigmatic-shelf-36767.herokuapp.com/api?https://api.stlouisfed.org/fred/series/observations?series_id=GDP&api_key=ed1b37238eb016257dabc4a5cd535e15&file_type=json')
+      //"https://api.stlouisfed.org/fred/series/observations?series_id=GDP&api_key=ed1b37238eb016257dabc4a5cd535e15&file_type=json")
+         .then( res => {
+           res.data["observations"].map( (result,index)=>{
+             let date = parseTime( result.date)
+             let value = +result.value
+             if (isNaN(value)){
+               value=0
+             }
+             gdp[index] = { date: date
+                           ,gdp: value}
+             })
+          this.setState({data: gdp })
+          this.setContext()
+          this.setState({loaded: true})
+         })
+  }
 
   render(){
+    if (this.state.loaded){
       return (
-        <div>
-          <h1 className="title">US GDP - Seasonally Adjusted Annual Rate</h1>
-          <h4 className="title">Data from <a href="https://research.stlouisfed.org/about.html" target="_blank">fred.stlouisfed.org</a></h4>
-          <div ref="gdpChart"></div>
-          <div ref="tooltip"></div>
-        </div>
+        <div ref="tooltip"></div>
       )
+    } else {
+      return <Loading />
+    }
   }
 
-  componentDidMount(){
-    this.setContext()
-  }
   componentDidUpdate(){
-    d3.select("#GDPSVG").remove()
-    d3.select("#tip").remove()
-    this.setContext()
+    let c = d3.select(this.props.location)
+    c.selectAll('svg').remove()
+    d3.select("#tip div").remove()
+    if(this.state.loaded) this.setContext()
   }
 
   setContext(){
-    let gdp = this.props.data,
-        margin = {top: 0, bottom: 100, right: 50, left: 100},
-        height = this.props.height - margin.top - margin.bottom - 100,
-        width = this.props.width - margin.right - margin.left
+    let gdp = this.state.data,
+        margin = {top: 5, bottom: 65, right: 10, left: 90},
+        height = this.props.size.height - margin.top - margin.bottom,
+        width = this.props.size.width - margin.right - margin.left
 
-     let div = d3.select(this.refs.tooltip)
-     .append("div")
+  let div = d3.select(this.refs.tooltip)
      .attr("id", "tip")
      .attr("class", "tooltip")
      .style("opacity", 0);
@@ -51,15 +74,14 @@ class GDPViz extends React.Component {
     x.domain(d3.extent( gdp, function(d){return d.date}))
 
     // Create the SVG
-    let context = d3.select( this.refs.gdpChart).append('svg')
+    let context = d3.select( this.props.location).append('svg')
       .attr('height', height + margin.top + margin.bottom)
       .attr('width', width + margin.right + margin.left)
-      .attr('id', this.props.id)
       .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
 
     // Append a defs section to the SVG
-    let gradient = d3.select( "#"+this.props.id)
+    let gradient = d3.select( this.props.location).select('svg')
           .append("defs")
           .append("linearGradient")
           .attr("id", "gdpGradient")
@@ -87,9 +109,9 @@ class GDPViz extends React.Component {
            div.transition()
            .duration(200)
            .style("opacity", .9);
-           div.html(formatTime(d.date-1) + "<br/>" + d.gdp)
+           div.html("Date: " + formatTime(d.date-1) + "<br/>GDP: " + d.gdp)
            .style("left", (d3.event.pageX-80) + "px")
-           .style("top", (d3.event.pageY - 28) + "px");
+           .style("top", (d3.event.pageY-125) + "px");
          })
        .on("mouseout", function(d) {
          div.transition()
@@ -106,13 +128,33 @@ class GDPViz extends React.Component {
       context.append("text")
         .attr("class", "axisLabel")
         .attr("x", width/2)
-        .attr("y", height + margin.top + 50)
+        .attr("y", height + margin.bottom/2 + 5)
         .text("Date (Quarter End)")
 
       // Add the Y Axis
       context.append("g")
        .attr("class", "axis")
        .call(d3.axisLeft(y));
+
+      //Add title, subtitle
+      context.append("text")
+       .attr('x', width/2)
+       .attr('y', margin.top)
+       .attr('dy', '1em')
+       .style('font-size', '28px')
+       .style('text-anchor', 'middle')
+       .text('US GDP - Seasonally Adjusted Annual Rate')
+     context.append('a')
+       .attr("xlink:href", "https://research.stlouisfed.org/about.html")
+       .attr('target', '_blank')
+       .append("text")
+         .attr('x', width/2)
+         .attr('y', margin.top)
+         .attr('dy', '3.5em')
+         .style('font-size', '14px')
+         .style('text-anchor', 'middle')
+         .attr('class', 'svgLink')
+         .text('Data from https://research.stlouisfed.org/about.html')
 
       context.append("text")
         .attr("class", "axisLabel")
@@ -123,13 +165,6 @@ class GDPViz extends React.Component {
         .text("US Dollars (Billions)")
 
      return context
-  }
-
-  resetContext(){
-    let id = '#' + this.state.id
-    const context = d3.select(id);
-    context.remove();
-    this.setContext();
   }
 
 }

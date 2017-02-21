@@ -9,25 +9,22 @@ export default class ChartContainer extends React.Component{
 
   constructor(props){
     super(props)
-
+    console.log(props)
     let margin = {top: 50, bottom: 20, right: 20, left: 60}
 
     this.state = {
       data: [],
       loaded: false,
-      height: 0,
-      width: 0,
+      height: this.props.size.height,
+      width: this.props.size.width,
       margin: margin,
       svgId: "GDPSVG",
       tooltipId: "tooltip"
     }
 
-    this.updateDimensions = this.updateDimensions.bind(this)
-
   }
 
   componentDidMount(){
-    window.addEventListener("resize", _.debounce(this.updateDimensions,100));
     let gdp = []
     let parseTime = d3.timeParse("%Y-%m-%d")
     let formatTime = d3.timeFormat("%d-%b-%Y")
@@ -50,28 +47,6 @@ export default class ChartContainer extends React.Component{
 
   }
 
-  updateDimensions() {
-    let w=window,
-    d = document,
-    documentElement = d.documentElement,
-    body = d.getElementsByTagName('body')[0],
-    winWidth = w.innerWidth || documentElement.clientWidth || body.clientWidth,
-    winHeight = w.innerHeight|| documentElement.clientHeight|| body.clientHeight;
-
-    winWidth = winWidth < 500 ? 500 : winWidth
-      this.setState({width: winWidth,
-                   height: winHeight
-                 });
-  }
-
-  componentWillMount() {
-      this.updateDimensions();
-  }
-
-  componentWillUnmount() {
-      window.removeEventListener("resize", this.updateDimensions);
-  }
-
   render(){
     if (this.state.loaded){
       return ( <div ref='container'>
@@ -85,7 +60,4 @@ export default class ChartContainer extends React.Component{
     }
   }
 
-  clear(){
-    d3.select(this.refs.container).remove()
-  }
 }

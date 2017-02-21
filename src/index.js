@@ -1,13 +1,15 @@
 import React from 'react';
 import {render} from 'react-dom';
+import store from './utils/store'
+import {Provider} from 'react-redux'
 import './styles/main.scss';
-import ChartContainer from './components/ChartContainer'
+import Carousel from './components/Carousel'
 
 const rootElement = document.getElementById('app');
 
 render(
-      <div>
-        <ChartContainer />
-      </div>,
+  <Provider store={store}>
+    <Carousel />
+  </Provider>,
   rootElement
 );
