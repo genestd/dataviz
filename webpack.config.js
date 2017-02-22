@@ -20,7 +20,8 @@ module.exports={
   output: {
     path: __dirname + '/dist',
     //publicPath: './dist',
-    filename: "index_bundle.js"
+    filename: "index_bundle.js",
+    publicPath: '/'
   },
   devServer: {
     contentBase: __dirname + '/dist',

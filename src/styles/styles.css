@@ -5,7 +5,7 @@
 .flag {
     width: 32px;
     height: 22px;
-    background: url('/icons/flags.png') no-repeat;
+    background: url(/icons/flags.png) no-repeat;
 }
 
 
