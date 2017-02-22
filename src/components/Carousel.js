@@ -52,7 +52,7 @@ class Carousel extends React.Component{
     return (
       <div className='carousel'>
         <h1 className='header'>A Gallery of D3 Visualizations</h1>
-          <img src="/icons/Blank.gif" className="flag flag-cz" alt="Czech Republic" />
+          <img src="icons/Blank.gif" className="flag flag-cz" alt="Czech Republic" />
         <ReactCSSTransitionGroup className='container' component='div' transitionName={"animation--" + this.props.direction} transitionEnterTimeout={1000} transitionLeaveTimeout={1000}>
           <div ref='chartDiv'>
             {this.fetchChart()}

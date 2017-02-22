@@ -24,7 +24,7 @@ module.exports={
   },
   devServer: {
     contentBase: __dirname + '/dist',
-    publicPath: 'http://localhost:8080'
+    //publicPath: 'http://localhost:8080'
   },
   module: {
     loaders: [
