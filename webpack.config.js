@@ -47,7 +47,6 @@ module.exports={
     HTMLWebpackPluginConfig,
     new CopyWebpackPlugin([
             { from: './src/icons', to: 'icons' },
-            { from: './src/icons/flags.png', to: 'flags.png'},
             { from: './src/data.csv' },
             { from: './src/tempData.json'},
             { from: './src/countryData.json'}
