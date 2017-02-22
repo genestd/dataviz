@@ -19,7 +19,7 @@ module.exports={
   ],
   output: {
     path: __dirname + '/dist',
-    publicPath: 'https://genestd.github.io/dataviz/',
+    //publicPath: './dist',
     filename: "index_bundle.js"
   },
   devServer: {
