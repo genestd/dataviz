@@ -3678,25 +3678,6 @@
     },
     {
       "type": "Feature",
-      "geometry": null,
-      "properties": {
-        "mass": "2250",
-        "name": "Bulls Run",
-        "reclong": null,
-        "geolocation_address": null,
-        "geolocation_zip": null,
-        "year": "1964-01-01T00:00:00.000",
-        "geolocation_state": null,
-        "fall": "Fell",
-        "id": "5163",
-        "recclass": "Iron?",
-        "reclat": null,
-        "geolocation_city": null,
-        "nametype": "Valid"
-      }
-    },
-    {
-      "type": "Feature",
       "geometry": {
         "type": "Point",
         "coordinates": [
@@ -5191,25 +5172,6 @@
         "id": "5374",
         "recclass": "L6",
         "reclat": "32.102500",
-        "geolocation_city": null,
-        "nametype": "Valid"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": null,
-      "properties": {
-        "mass": "48.6",
-        "name": "Clohars",
-        "reclong": null,
-        "geolocation_address": null,
-        "geolocation_zip": null,
-        "year": "1822-01-01T00:00:00.000",
-        "geolocation_state": null,
-        "fall": "Fell",
-        "id": "5383",
-        "recclass": "L4",
-        "reclat": null,
         "geolocation_city": null,
         "nametype": "Valid"
       }
@@ -10216,25 +10178,6 @@
     },
     {
       "type": "Feature",
-      "geometry": null,
-      "properties": {
-        "mass": "700",
-        "name": "Jalanash",
-        "reclong": null,
-        "geolocation_address": null,
-        "geolocation_zip": null,
-        "year": "1990-01-01T00:00:00.000",
-        "geolocation_state": null,
-        "fall": "Fell",
-        "id": "12068",
-        "recclass": "Ureilite",
-        "reclat": null,
-        "geolocation_city": null,
-        "nametype": "Valid"
-      }
-    },
-    {
-      "type": "Feature",
       "geometry": {
         "type": "Point",
         "coordinates": [
@@ -10329,25 +10272,6 @@
         "id": "12078",
         "recclass": "LL6",
         "reclat": "43.833330",
-        "geolocation_city": null,
-        "nametype": "Valid"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": null,
-      "properties": {
-        "mass": "450",
-        "name": "Jemlapur",
-        "reclong": null,
-        "geolocation_address": null,
-        "geolocation_zip": null,
-        "year": "1901-01-01T00:00:00.000",
-        "geolocation_state": null,
-        "fall": "Fell",
-        "id": "12079",
-        "recclass": "L6",
-        "reclat": null,
         "geolocation_city": null,
         "nametype": "Valid"
       }
@@ -12979,25 +12903,6 @@
     },
     {
       "type": "Feature",
-      "geometry": null,
-      "properties": {
-        "mass": "9.6",
-        "name": "Cumulus Hills 04075",
-        "reclong": null,
-        "geolocation_address": null,
-        "geolocation_zip": null,
-        "year": "2003-01-01T00:00:00.000",
-        "geolocation_state": null,
-        "fall": "Found",
-        "id": "32531",
-        "recclass": "Pallasite",
-        "reclat": null,
-        "geolocation_city": null,
-        "nametype": "Valid"
-      }
-    },
-    {
-      "type": "Feature",
       "geometry": {
         "type": "Point",
         "coordinates": [
@@ -14617,25 +14522,6 @@
         "id": "15414",
         "recclass": "H5",
         "reclat": "34.233330",
-        "geolocation_city": null,
-        "nametype": "Valid"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": null,
-      "properties": {
-        "mass": "114",
-        "name": "Maria Linden",
-        "reclong": null,
-        "geolocation_address": null,
-        "geolocation_zip": null,
-        "year": "1925-01-01T00:00:00.000",
-        "geolocation_state": null,
-        "fall": "Fell",
-        "id": "15418",
-        "recclass": "L4",
-        "reclat": null,
         "geolocation_city": null,
         "nametype": "Valid"
       }
@@ -16992,25 +16878,6 @@
     },
     {
       "type": "Feature",
-      "geometry": null,
-      "properties": {
-        "mass": "1.4",
-        "name": "Natal",
-        "reclong": null,
-        "geolocation_address": null,
-        "geolocation_zip": null,
-        "year": "1973-01-01T00:00:00.000",
-        "geolocation_state": null,
-        "fall": "Fell",
-        "id": "16923",
-        "recclass": "Stone-uncl",
-        "reclat": null,
-        "geolocation_city": null,
-        "nametype": "Valid"
-      }
-    },
-    {
-      "type": "Feature",
       "geometry": {
         "type": "Point",
         "coordinates": [
@@ -17305,44 +17172,6 @@
         "id": "16970",
         "recclass": "Stone-uncl",
         "reclat": "49.033330",
-        "geolocation_city": null,
-        "nametype": "Valid"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": null,
-      "properties": {
-        "mass": "3.3",
-        "name": "Niger (L6)",
-        "reclong": null,
-        "geolocation_address": null,
-        "geolocation_zip": null,
-        "year": "1967-01-01T00:00:00.000",
-        "geolocation_state": null,
-        "fall": "Fell",
-        "id": "16974",
-        "recclass": "L6",
-        "reclat": null,
-        "geolocation_city": null,
-        "nametype": "Valid"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": null,
-      "properties": {
-        "mass": "3.3",
-        "name": "Niger (LL6)",
-        "reclong": null,
-        "geolocation_address": null,
-        "geolocation_zip": null,
-        "year": "1967-01-01T00:00:00.000",
-        "geolocation_state": null,
-        "fall": "Fell",
-        "id": "16975",
-        "recclass": "LL6",
-        "reclat": null,
         "geolocation_city": null,
         "nametype": "Valid"
       }
@@ -18874,25 +18703,6 @@
     },
     {
       "type": "Feature",
-      "geometry": null,
-      "properties": {
-        "mass": "69.5",
-        "name": "Dominion Range 03239",
-        "reclong": null,
-        "geolocation_address": null,
-        "geolocation_zip": null,
-        "year": "2002-01-01T00:00:00.000",
-        "geolocation_state": null,
-        "fall": "Found",
-        "id": "32591",
-        "recclass": "L6",
-        "reclat": null,
-        "geolocation_city": null,
-        "nametype": "Valid"
-      }
-    },
-    {
-      "type": "Feature",
       "geometry": {
         "type": "Point",
         "coordinates": [
@@ -20037,25 +19847,6 @@
         "id": "18851",
         "recclass": "L6",
         "reclat": "11.583330",
-        "geolocation_city": null,
-        "nametype": "Valid"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": null,
-      "properties": {
-        "mass": "290.89999999999998",
-        "name": "Dominion Range 03240",
-        "reclong": null,
-        "geolocation_address": null,
-        "geolocation_zip": null,
-        "year": "2002-01-01T00:00:00.000",
-        "geolocation_state": null,
-        "fall": "Found",
-        "id": "32592",
-        "recclass": "LL5",
-        "reclat": null,
         "geolocation_city": null,
         "nametype": "Valid"
       }
@@ -24331,25 +24122,6 @@
         "id": "23789",
         "recclass": "H5",
         "reclat": "35.383330",
-        "geolocation_city": null,
-        "nametype": "Valid"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": null,
-      "properties": {
-        "mass": "1421",
-        "name": "Talampaya",
-        "reclong": null,
-        "geolocation_address": null,
-        "geolocation_zip": null,
-        "year": "1995-01-01T00:00:00.000",
-        "geolocation_state": null,
-        "fall": "Fell",
-        "id": "23791",
-        "recclass": "Eucrite-cm",
-        "reclat": null,
         "geolocation_city": null,
         "nametype": "Valid"
       }
