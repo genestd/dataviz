@@ -18,15 +18,22 @@ export default class MapViz extends React.Component{
     // get data - meteor data sorted for mouseover functionality
     d3.json( 'meteorData.json', function(error, data){
       let that=this
-    
+      let test=[]
       data.features.forEach( function(d){
-        d.properties.mass = +d.properties.mass
+        d.properties.mass = Math.round(d.properties.mass/1000)
+        test.push(d.properties.mass)
       })
       data.features.sort( function(a,b){
         if (a.properties.mass > b.properties.mass) return - 1
         if (a.properties.mass < b.properties.mass) return 1
         return 0
       })
+      test.sort( function(a,b){
+        if (a > b) return - 1
+        if (a < b) return 1
+        return 0
+      })
+      console.log(test)
       this.state.map.meteorData(data.features)
       d3.json( 'ne_50m_admin_0_countries.json', function(error, data){
         this.setState({ ready: true})
@@ -159,7 +166,7 @@ function mapChart(){
              .style('opacity', 1)
              .style('top', (d3.event.pageY-125) + "px")
              .style('left', (d3.event.pageY-80) + "px")
-          div.html("Name: " + d.properties.name + "<br/>Mass: " + d.properties.mass)
+          div.html("Name: " + d.properties.name + "<br/>Mass: " + d.properties.mass + "Kg")
         })
         .on('mouseout', function(){
           div.transition()
