@@ -13,7 +13,7 @@ class GDPViz extends React.Component {
     let c = d3.select(this.props.location)
     c.selectAll('svg').remove()
     this.setContext = this.setContext.bind(this)
-
+    d3.select('body').attr('class', 'body')
     this.state = {
       data: [],
       loaded: false,

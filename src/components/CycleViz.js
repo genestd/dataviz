@@ -54,11 +54,12 @@ class CycleViz extends React.Component {
   componentDidUpdate(){
     let c = d3.select(this.props.location)
     c.selectAll('svg').remove()
-    d3.select("#tip").remove()
+    d3.select("#tip div").remove()
     if(this.state.loaded) this.setContext()
   }
 
   setContext(){
+    d3.select('body').attr('class', '')
     let data = this.state.data,
         margin = {top: 10, bottom: 65, right: 105, left: 50},
         height = this.props.size.height - margin.top - margin.bottom,

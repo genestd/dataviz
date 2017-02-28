@@ -3,6 +3,7 @@ import GDPViz from '../components/GDPViz'
 import CycleViz from '../components/CycleViz'
 import HeatViz from '../components/Heatviz'
 import ForceViz from '../components/ForceViz'
+import MapViz from '../components/MapViz'
 import ChartContainer from '../components/ChartContainer'
 import {
   UPDATE_DIMENSIONS,
@@ -15,7 +16,7 @@ import {
 //[ {comp: Loading}, {comp: GDPViz}, {comp: CycleViz}, {comp: Loading}]
 const INITIAL_STATE = {
   size: {},
-  charts: [ {comp: ForceViz}, {comp: GDPViz}, {comp: CycleViz}, {comp: HeatViz}],
+  charts: [ {comp: MapViz}, {comp: ForceViz}, {comp: HeatViz}, {comp: GDPViz}, {comp: CycleViz}],
   currentChart: 0,
   direction: 'next'
 }
@@ -39,7 +40,7 @@ const appState = function( state=INITIAL_STATE, action){
 
     case DECREMENT_CAROUSEL:
       newState.currentChart--
-      if (newState.currentChart <= 0 ){
+      if (newState.currentChart < 0 ){
         newState.currentChart = newState.charts.length-1
       }
       newState.direction='next'

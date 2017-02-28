@@ -13,25 +13,25 @@ var devFlagPlugin = new webpack.DefinePlugin({
 });
 
 module.exports={
-//  devtool: "source-map",
+  devtool: "source-map",
   entry: [
     './src/index.js'
   ],
   output: {
     path: __dirname + '/dist',
-    //publicPath: './dist',
+    //publicPath: 'https://genestd.github.io/dataviz/',
     filename: "index_bundle.js"
   },
   devServer: {
-    contentBase: __dirname + '/dist',
-    //publicPath: 'http://localhost:8080'
+    //contentBase: __dirname + '/dist',
+    publicPath: 'http://localhost:8080'
   },
   module: {
     loaders: [
+      { test: /\.scss$/, loaders: [ 'style', 'css', 'resolve-url-loader', 'sass?outputStyle=compressed' ]},
       { test: /\.(jpe?g|png|gif|svg|tsv|csv)$/i, loader: 'file-loader' },
       { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader"},
-      { test: /\.css/, loader: ExtractTextPlugin.extract(["css"])},
-      { test: /\.scss$/, loaders: [ 'style', 'css', 'resolve-url-loader', 'sass?outputStyle=compressed' ]}
+      //{ test: /\.css/, loader: ExtractTextPlugin.extract(["css"])},
     ]
   },
   sassLoader: {
@@ -49,7 +49,9 @@ module.exports={
             { from: './src/icons', to: 'icons' },
             { from: './src/data.csv' },
             { from: './src/tempData.json'},
-            { from: './src/countryData.json'}
+            { from: './src/countryData.json'},
+            { from: './src/ne_50m_admin_0_countries.json'},
+            { from: './src/meteorData.json'}
         ]),
     new ExtractTextPlugin("styles.css"),
     devFlagPlugin

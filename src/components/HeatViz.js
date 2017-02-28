@@ -48,14 +48,14 @@ class HeatViz extends React.Component {
   setContext(){
     let data = this.state.data,
         baseTemp = this.state.baseTemperature,
-        margin = {top: 75, bottom: 65, right: 10, left: 70},
+        margin = {top: 75, bottom: 65, right: 100, left: 70},
         height = this.props.size.height - margin.top - margin.bottom,
         width = this.props.size.width - margin.right - margin.left,
         months=['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
     let div = d3.select(this.refs.tooltip)
        .attr("id", "tip")
-       .attr("class", "tooltip")
+       .attr("class", "heatTip")
        .style("opacity", 0);
 
     //Set up Scales - X is linear (years), Y is linear (Months),
@@ -70,8 +70,9 @@ class HeatViz extends React.Component {
     //let colors = ['#ffffcc','#ffeda0','#fed976','#feb24c','#fd8d3c','#fc4e2a','#e31a1c','#bd0026','#800026']
     let colors = ['#0500ff', '#0032ff', '#00d4ff', '#3eff00', '#FFd200', '#FF6e00', '#FF0a00', '#FF0090' ]
     let colorScale = d3.scaleQuantize()
-                       .domain(d3.extent(data, function(d){return baseTemp+d.variance}))
+                       .domain(d3.extent(data, function(d){return d.variance}))
                        .range(colors)
+
     // Create the SVG
     let context = d3.select( this.props.location).append('svg')
       .attr('height', height + margin.top + margin.bottom)
@@ -88,7 +89,7 @@ class HeatViz extends React.Component {
         .attr("width", width/(maxYear-minYear))
         .attr("y", function(d) { return y(d.month); })
         .attr("height", function(d) { return height/12})
-        .attr('fill', function(d){ return colorScale(baseTemp + d.variance)})
+        .attr('fill', function(d){ return colorScale(d.variance)})
         .on("mouseover", function(d) {
            div.transition()
            .duration(200)
@@ -155,6 +156,44 @@ class HeatViz extends React.Component {
         .style('text-anchor', 'middle')
         .text('Temperatures are in Celsius and reported as anomalies relative to the Jan 1951-Dec 1980 average. ' +
               'Estimated Jan 1951-Dec 1980 absolute temperature ℃: 8.66 +/- 0.07')
+
+     let legend = context.append('g')
+        .attr('transform', 'translate(' + (width+margin.right/2) + ',0)')
+
+     legend.selectAll('.legend')
+        .data(colors)
+        .enter()
+        .append('rect')
+        .attr('class', 'legend')
+        .attr('x', 0)
+        .attr('y', function(d,i){ return ((height/colors.length)*i)})
+        .attr('width', margin.right/2)
+        .attr('height', height / colors.length)
+        .attr('fill', function(d,i){ return colors[i]})
+        .append('text')
+        .text('test')
+        
+      legend.selectAll('.legendLabels')
+        .data(colors)
+        .enter()
+        .append('text')
+        .attr('fill', '#fff')
+        .attr('class', 'legendLabels')
+        .attr('x', '.5em')
+        .attr('y', function(d,i){ return ((height/colors.length)*i)})
+        .attr('dy', '2em')
+        .text( function(d,i){
+          let low = colorScale.domain()[0]
+          let high = colorScale.domain()[1]
+          let tick = (high-low)/colors.length
+          let num
+          if( i===0){
+            num = low + tick/2
+          } else {
+            num = low + tick/2 + tick*i
+          }
+          return Math.round(num*100)/100
+        })
 
      return context
   }

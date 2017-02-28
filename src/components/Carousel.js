@@ -44,17 +44,17 @@ class Carousel extends React.Component{
 
   fetchChart(){
      const Chart = this.props.charts[this.props.currentChart].comp
-     return <Chart className={'hero'} key={Chart} size={this.props.size} location={this.refs.chartDiv}
-                   onItemTransitionEnd={(item) => { console.log('Transition end for item', item);}}/>
+     return <Chart className={'hero'} key={Chart} size={this.props.size} location={this.refs.chartDiv} tooltip={this.refs.tooltip} />
      //<img className='hero' key={this.props.charts[this.props.currentChart]} src={this.props.charts[this.props.currentChart]}/>
+     //<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" className="flag flag-cz" alt="Czech Republic" />
   }
   render(){
     return (
       <div className='carousel'>
         <h1 className='header'>A Gallery of D3 Visualizations</h1>
-          <img src="icons/Blank.gif" className="flag flag-cz" alt="Czech Republic" />
         <ReactCSSTransitionGroup className='container' component='div' transitionName={"animation--" + this.props.direction} transitionEnterTimeout={1000} transitionLeaveTimeout={1000}>
-          <div ref='chartDiv'>
+          <div ref='chartDiv' id='chartDiv'>
+            <div ref='tooltip' id='tip'></div>
             {this.fetchChart()}
           </div>
         </ReactCSSTransitionGroup>
@@ -67,7 +67,7 @@ class Carousel extends React.Component{
         <h4 className='footer'>
           {this.props.charts.map( function(item, index){
             let active = index === this.props.currentChart ? ' active' : ''
-            return( <div key={index} className={'navDot'+active} onClick={()=>{console.log(index);this.props.actions.gotoCarousel(index)}}></div>)
+            return( <div key={index} className={'navDot'+active} onClick={()=>{this.props.actions.gotoCarousel(index)}}></div>)
           }.bind(this))}
         </h4>
       </div>

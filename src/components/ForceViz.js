@@ -5,7 +5,7 @@ class ForceViz extends React.Component {
   constructor(props){
     super(props);
     let c = d3.select(this.props.location)
-      //c.selectAll('svg').remove()
+        c.selectAll('svg').remove()
     this.setContext = this.setContext.bind(this)
 
     this.state = {
@@ -18,8 +18,7 @@ class ForceViz extends React.Component {
       this.setState({
         nodes: fileData.nodes,
         links: fileData.links
-      })
-      this.setContext()
+      })      //this.setContext()
       this.setState({
         loaded:true
       })
@@ -33,56 +32,90 @@ class ForceViz extends React.Component {
       )
   }
 
+
   componentDidUpdate(){
     let c = d3.select(this.props.location)
     c.selectAll('svg').remove()
-    d3.select("#tip div").remove()
+    d3.selectAll("#tip img").remove()
+    d3.selectAll("#tip div").remove()
     if(this.state.loaded) this.setContext()
+  }
+
+  componentWillUnmount(){
+    let c = d3.selectAll('svg').remove()
+    d3.selectAll("#tip img").remove()
+    d3.selectAll("#tip div").remove()
   }
 
   setContext(){
     let nodes = this.state.nodes,
         links = this.state.links,
-        margin = {top: 75, bottom: 65, right: 10, left: 70},
+        margin = {top: 0, bottom: 11, right: 0, left: 16},
         height = this.props.size.height - margin.top - margin.bottom,
-        width = this.props.size.width - margin.right - margin.left,
-        radius = 5;
-
-    let div = d3.select(this.refs.tooltip)
-       .attr("id", "tip")
-       .attr("class", "tooltip")
-       .style("opacity", 0);
+        width = this.props.size.width - margin.right - margin.left
 
     let simulation = d3.forceSimulation()
+       .alphaDecay(.05)
        .force("link", d3.forceLink())
-       .force("charge", d3.forceManyBody().distanceMax(width/10))
-       .force("center", d3.forceCenter(width / 2, height / 2))
+       .force("charge", d3.forceManyBody().strength(-100).distanceMin(100).distanceMax(170))
+       .force("center", d3.forceCenter(width/2 , height/2 ))
+       .force("collide", d3.forceCollide(25))
+
+    let tooltip = d3.select(this.props.tooltip)
+       .append('div')
+       .attr("id", "tip")
+       .attr("class", "forceTip")
+       .style('z-index', 100)
+       .style("opacity", 0)
 
     // Create the SVG
     let context = d3.select( this.props.location).append('svg')
       .attr('height', height + margin.top + margin.bottom)
       .attr('width', width + margin.right + margin.left)
 
-    // Add the bars
-    let link = context.append("g")
-       .attr("class", "link")
-       .selectAll('line')
-       .data(links)
-       .enter().append('line')
-       .attr('stroke', 'steelblue')
-       .attr('stroke-width', '1.5px')
-
-    let node = context.append('g')
-       .attr('class','node')
-       .selectAll('circle')
+    let node = context.append("g")
+       .attr("class", "node")
+       .selectAll('rect')
        .data(nodes)
-       .enter().append('circle')
-       .attr('r', radius)
-       .attr('fill', 'red')
+       .enter().append('rect')
+       .attr('height', '11px')
+       .attr('width', '16px')
+       .attr('stroke-width', '1.5px')
+       .attr('fill', 'transparent')
+       .on('mouseover', function(d){
+         tooltip.transition().duration(200)
+            .attr('width', function(){ return (d.country.length+5) + 'em'}.bind(d))
+            .attr('height', '2em')
+            .attr('transform', 'scale(2)')
+            .style('opacity', '.9')
+            .style('top', function(d){return d3.event.pageY - 120 + 'px'})
+            .style('left', d3.event.pageX - 60 + 'px')
+         tooltip.html(d.country)
+       })
+       .on('mouseout', function(d){
+         tooltip.transition().duration(200)
+            .style('opacity', 0)
+       })
        .call(d3.drag()
-           .on("start", dragstarted)
-           .on("drag", dragged)
-           .on("end", dragended));
+         .on("start", dragstarted)
+         .on("drag", dragged)
+         .on("end", dragended))
+
+    let flag = d3.select(this.props.tooltip)
+         .selectAll('.node')
+         .data(nodes)
+         .enter().append('img')
+         .style('position', 'absolute')
+         .style('z-index', 1)
+         .attr('class', function(d) {return 'flag flag-' + d.code;})
+
+     // Add the lines
+     let link = context.append("g")
+        .selectAll('links')
+        .data(links)
+        .enter().append('line')
+        .attr('stroke', 'steelblue')
+        .attr('stroke-width', '1.5px')
 
      simulation.nodes(nodes)
        .on('tick', ticked)
@@ -90,99 +123,48 @@ class ForceViz extends React.Component {
 
 
      function ticked() {
-      link
-        .attr("x1", function(d) { return d.source.x; })
-        .attr("y1", function(d) { return d.source.y; })
-        .attr("x2", function(d) { return d.target.x; })
-        .attr("y2", function(d) { return d.target.y; });
+      flag
+        .style("left", function(d) { d.x = Math.max(16, Math.min(width - 16, d.x)); return d.x + 'px' })
+        .style("top", function(d) { d.y = Math.max(30, Math.min(height-11, d.y)); return d.y + 'px' })
 
       node
-        .attr("cx", function(d) { return d.x })
-        .attr("cy", function(d) { return d.y });
+        .attr('x', function(d){ d.x = Math.max(16, Math.min(width - 16, d.x)); return d.x })
+        .attr('y', function(d){ d.y = Math.max(30, Math.min(height-11, d.y)); return d.y })
+
+      link
+        .attr("x1", function(d) { return d.source.x+8; })
+        .attr("y1", function(d) { return d.source.y+5.5; })
+        .attr("x2", function(d) { return d.target.x+8; })
+        .attr("y2", function(d) { return d.target.y+5.5; });
     }
 
-    function dragstarted(d) {
-      if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-      d.fx = d.x;
-      d.fy = d.y;
-    }
+    function dragstarted(d, i) {
+         simulation.stop() // stops the force auto positioning before you start dragging
+     }
 
-    function dragged(d) {
-      d.fx = d3.event.x;
-      d.fy = d3.event.y;
-    }
+     function dragged(d, i) {
+         d.px += d3.event.dx;
+         d.py += d3.event.dy;
+         d.x += d3.event.dx;
+         d.y += d3.event.dy;
+         ticked(); // this is the key to make it work together with updating both px,py,x,y on d !
+     }
 
-    function dragended(d) {
-      if (!d3.event.active) simulation.alphaTarget(0);
-      d.fx = null;
-      d.fy = null;
-    }
-    /*    .on("mouseover", function(d) {
-           div.transition()
-           .duration(200)
-           .style("opacity", .9);
-           let line1="<span class='line1'>"+months[d.month-1]+" "+d.year+"</span>"
-           let line2="<span><br/>Temp: " + this.round2dp((baseTemp + d.variance),2) + "</span>"
-           let line3="<span><br/>Variance: " + this.round2dp(d.variance,2) + "</span>"
-           div.html( line1 + line2 + line3)
-             //"<strong>Date:</strong>" + months[d.month-1] + ", " + d.year + "<br/>Temp: " + (baseTemp + d.variance) + "<br/>Variance: " + d.variance)
-           .style("left", (d3.event.pageX-80) + "px")
-           .style("top", (d3.event.pageY-125) + "px");
-         }.bind(this))
-       .on("mouseout", function(d) {
-         div.transition()
-         .duration(500)
-         .style("opacity", 0);
-       });*/
+     function dragended(d, i) {
+         d.fixed = true; // of course set the node to fixed so the force doesn't include the node in its auto positioning stuff
+         simulation.alpha(.5)
+         ticked();
+         simulation.restart();
+     }
 
-      // Add the X Axis
-      context.append("g")
-        .attr("class", "axis")
-        .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(x).tickFormat(d3.format("d")));
-
-      context.append("text")
-        .attr("class", "axisLabel")
-        .attr("x", width/2)
-        .attr("y", height + margin.bottom/2+10)
-        .text("Year")
-
-      // Add the Y Axis
-      context.append("g")
-       .attr("class", "axis")
-       .call(d3.axisLeft(y).tickFormat(function(d,i){return months[i-1]}));
-
-      context.append("text")
-        .attr("class", "axisLabel")
-       .attr("transform", "rotate(-90)")
-       .attr("x", 0-height/2)
-       .attr("y", 0-margin.left)
-       .attr("dy","1.1em")
-       .text("Month ")
-
-
-      //Add title, subtitle
+      //Add title,
       context.append("text")
        .attr('x', width/2)
        .attr('y', 0)
-       .attr('dy', '-1.4em')
+       .attr('dy', '1em')
        .style('font-size', '28px')
        .style('text-anchor', 'middle')
-       .text('Monthly Global Land Surface Temperature')
-     context.append("text")
-         .attr('x', width/2)
-         .attr('y', 0)
-         .attr('dy', '-1.4em')
-         .style('font-size', '14px')
-         .text('1735-2015')
-      context.append("text")
-        .attr('x', width/2)
-        .attr('y',0)
-        .attr('dy', '-.5em')
-        .style('font-size', '12px')
-        .style('text-anchor', 'middle')
-        .text('Temperatures are in Celsius and reported as anomalies relative to the Jan 1951-Dec 1980 average. ' +
-              'Estimated Jan 1951-Dec 1980 absolute temperature ℃: 8.66 +/- 0.07')
+       .text('Force Directed Graph of National Borders')
 
      return context
   }
