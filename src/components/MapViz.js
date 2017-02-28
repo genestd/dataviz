@@ -18,6 +18,7 @@ export default class MapViz extends React.Component{
     // get data - meteor data sorted for mouseover functionality
     d3.json( 'meteorData.json', function(error, data){
       let that=this
+    
       data.features.forEach( function(d){
         d.properties.mass = +d.properties.mass
       })
